@@ -7,6 +7,7 @@ use App\Repository\CustomerRepository;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -53,6 +54,7 @@ class Customer
 
     /**
      * @ORM\OneToMany(targetEntity=Invoice::class, mappedBy="customer")
+     * @ApiSubresource
      */
     private $invoices;
 
