@@ -24,13 +24,14 @@ class Customer
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
+     * @Groups({"customers_read"})
      * @ORM\Column(type="integer")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"customers_read"})
+     * @Groups({"customers_read", "invoices_read"})
      */
     private $firstName;
 
@@ -54,6 +55,7 @@ class Customer
 
     /**
      * @ORM\OneToMany(targetEntity=Invoice::class, mappedBy="customer")
+     * @Groups({"customers_read"})
      * @ApiSubresource
      */
     private $invoices;

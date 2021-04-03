@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * "groups"={"invoices_read"}
  * })
  * @ApiResource(attributes={
- * "pagination_enabled"=true, "pagination_items_per_page"=20,"order":{"sentAt":"desc"}
+ * "pagination_enabled"=false, "pagination_items_per_page"=20,"order":{"sentAt":"desc"}
  * })
  * @ApiFilter(OrderFilter::class)
  */
@@ -23,6 +23,7 @@ class Invoice
 {
     /**
      * @ORM\Id
+     * @Groups({"invoices_read"})
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
