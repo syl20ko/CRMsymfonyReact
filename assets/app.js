@@ -1,26 +1,78 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactDom from "react-dom";
 import NavBar from "./js/components/Navbar";
 import HomePage from "./js/pages/HomePage";
 import CustomersPage from "./js/pages/CustomersPage";
-import { HashRouter, Switch, Router, Route } from "react-router-dom";
+import {
+  HashRouter,
+  Switch,
+  Route,
+  withRouter
+} from "react-router-dom";
 import "./styles/app.css";
 import "./styles/bootstrap.min.css";
 import InvoicesPage from "./js/pages/InvoicesPage";
+import LoginPage from "./js/pages/LoginPage";
+import AuthAPI from "./js/services/authAPI";
+import AuthContext from "./js/contexts/AuthContext";
+import PrivateRoute from "./js/components/PrivateRoute";
 /* import "./bootstrap"; */
 
+AuthAPI.setup();
+
 const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    AuthAPI.isAuthenticated()
+  );
+
+  const NavbarWithRouter = withRouter(NavBar);
+
+  const contextValue = {
+    isAuthenticated: isAuthenticated,
+    setIsAuthenticated: setIsAuthenticated,
+  };
+
   return (
-    <HashRouter>
-      <NavBar />
-      <main className="container pt-5">
-        <Switch>
-          <Route path="/invoices" component={InvoicesPage} />
-          <Route path="/customers" component={CustomersPage} />
-          <Route path="/" component={HomePage} />
-        </Switch>
-      </main>
-    </HashRouter>
+    <AuthContext.Provider value={contextValue}>
+      <HashRouter>
+        <NavbarWithRouter
+        /* Plus besoin grâce au context */
+        /*         isAuthenticated={isAuthenticated}
+          onLogout={setIsAuthenticated} */
+        />
+        <main className="container pt-5">
+          <Switch>
+            <Route
+              path="/login"
+              /* Plus besoin avec le context */
+              /*   render={(props) => (
+                <LoginPage onLogin={setIsAuthenticated} {...props} />
+              )} */
+              /* On revient à une syntaxte plus courte  */
+              component={LoginPage}
+            />
+
+            <PrivateRoute
+              path="/customers"
+              /* IDEM */
+              /*               isAuthenticated={isAuthenticated}
+               */
+              component={CustomersPage}
+            />
+
+            <PrivateRoute
+              path="/invoices"
+              /* IDEM */
+              /*               isAuthenticated={isAuthenticated}
+               */
+              component={InvoicesPage}
+            />
+
+            <Route path="/" component={HomePage} />
+          </Switch>
+        </main>
+      </HashRouter>
+    </AuthContext.Provider>
   );
 };
 
