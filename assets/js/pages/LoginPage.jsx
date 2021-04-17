@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import PageTitle from "../components/PageTitle";
 import AuthContext from "../contexts/AuthContext";
 import AuthAPI from "../services/authAPI";
+import Field from "../components/forms/Field";
 
 const LoginPage = ({
   /* on ne recoit plus cette props à cause du usecontect onLogin, */ history,
@@ -44,31 +45,24 @@ const LoginPage = ({
     <>
       <PageTitle title="Connexion à l'application" />
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="username">Adresse Email</label>
-          <input
-            value={credentials.username}
-            onChange={handleChange}
-            type="email"
-            name="username"
-            id="username"
-            placeholder="Email de connexion"
-            className={"form-control" + (error && " is-invalid")}
-          />
-          {error && <p className="invalid-feedback">{error}</p>}
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Mot de passe</label>
-          <input
-            value={credentials.password}
-            onChange={handleChange}
-            type="password"
-            placeholder="Mot de passe"
-            name="password"
-            id="password"
-            className="form-control"
-          />
-        </div>
+        <Field
+          label="Adresse Email"
+          name="username"
+          value={credentials.username}
+          onChange={handleChange}
+          placeholder="adresse email de connexion"
+          error={error}
+        />
+
+        <Field
+          name="password"
+          label="Mot de passe"
+          placeholder="mot de passe"
+          value={credentials.password}
+          onChange={handleChange}
+          type="password"
+          error=""
+        />
         <div className="form-group">
           <button type="submit" className="btn btn-success">
             Connexion

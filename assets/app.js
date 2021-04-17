@@ -3,12 +3,7 @@ import ReactDom from "react-dom";
 import NavBar from "./js/components/Navbar";
 import HomePage from "./js/pages/HomePage";
 import CustomersPage from "./js/pages/CustomersPage";
-import {
-  HashRouter,
-  Switch,
-  Route,
-  withRouter
-} from "react-router-dom";
+import { HashRouter, Switch, Route, withRouter } from "react-router-dom";
 import "./styles/app.css";
 import "./styles/bootstrap.min.css";
 import InvoicesPage from "./js/pages/InvoicesPage";
@@ -16,6 +11,8 @@ import LoginPage from "./js/pages/LoginPage";
 import AuthAPI from "./js/services/authAPI";
 import AuthContext from "./js/contexts/AuthContext";
 import PrivateRoute from "./js/components/PrivateRoute";
+import CustomerPage from "./js/pages/CustomerPage";
+import InvoicePage from "./js/pages/InvoicePage";
 /* import "./bootstrap"; */
 
 AuthAPI.setup();
@@ -51,7 +48,7 @@ const App = () => {
               /* On revient à une syntaxte plus courte  */
               component={LoginPage}
             />
-
+            <PrivateRoute path="/customers/:id" component={CustomerPage} />
             <PrivateRoute
               path="/customers"
               /* IDEM */
@@ -59,6 +56,8 @@ const App = () => {
                */
               component={CustomersPage}
             />
+
+            <PrivateRoute path="/invoices/:id" component={InvoicePage} />
 
             <PrivateRoute
               path="/invoices"

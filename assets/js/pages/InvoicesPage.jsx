@@ -4,6 +4,7 @@ import InvoicesAPI from "../services/invoicesAPI";
 import PageTitle from "../components/PageTitle";
 import FormSearch from "../components/FormSearch";
 import InvoicesTable from "../components/InvoicesTable";
+import { Link } from "react-router-dom";
 
 const InvoicesPage = (props) => {
   const [invoices, setInvoices] = useState([]);
@@ -42,8 +43,8 @@ const InvoicesPage = (props) => {
     (i) =>
       i.customer.firstName.toLowerCase().includes(search.toLowerCase()) ||
       i.customer.lastName.toLowerCase().includes(search.toLowerCase()) ||
-      i.amount.toString().startsWith(search.toLowerCase()) ||
-      STATUS_LABELS[i.status].toLowerCase().includes(search.toLowerCase())
+      i.amount.toString().startsWith(search.toLowerCase()) /* ||
+      STATUS_LABELS[i.status].toLowerCase().includes(search.toLowerCase()) */
   );
 
   // Gestion de la suppression
@@ -54,9 +55,7 @@ const InvoicesPage = (props) => {
 
     try {
       await InvoicesAPI.delete(id);
-      toast.success("La facture a bien été supprimée");
     } catch (error) {
-      toast.error("Une erreur est survenue");
       setInvoices(originalInvoices);
     }
   };
@@ -70,7 +69,10 @@ const InvoicesPage = (props) => {
 
   return (
     <>
+      <div className="d-flex justify-content-between align-items-center">
       <PageTitle title="Liste des factures" />
+      <Link className="btn btn-primary" to="/invoices/new" >Créer une facture</Link>
+      </div>
 
       <FormSearch handleSearch={handleSearch} search={search} />
 
